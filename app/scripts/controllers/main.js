@@ -1,5 +1,6 @@
 'use strict';
 
+
 /**
  * @ngdoc function
  * @name tattiFrontEndApp.controller:MainCtrl
@@ -15,15 +16,32 @@
       'Karma'
     ];
     $scope.authenticate = function(provider) {
-      console.log($auth);
       $auth.authenticate(provider).then(function(results){
-        console.log(results.data[0]);
-        window.location = '/#/'+ results.data[0].fb_id;
+
+        window.location = '/#/' + 'profile'
       })
   };
 
   }]);
-  app.controller('profileController', ['$scope', function ($scope) {
-    console.log('YOLO')
+  app.controller('profileController', ['$scope', '$auth', 'userInfo', 'locationRequest', function ($scope, $auth, userInfo, locationRequest) {
+    if($auth.isAuthenticated()){
+      userInfo.user().then(function(results){
+        $scope.user = results.data
+      })
+    }
+    else {
+      window.location = '/#/'
+    }
+    locationRequest.locate().then(function(results){
+      $scope.location = results.data.results[4].formatted_address
+      console.log(results);
+    })
+  }]);
 
+  app.controller('logoutController', ['$scope', '$auth', 'userInfo', function ($scope, $auth, userInfo) {
+      if (!$auth.isAuthenticated()) { window.location = '/#/'; return }
+      $auth.logout()
+        .then(function() {
+          window.location = '/#/'
+        });
   }]);

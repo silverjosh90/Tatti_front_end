@@ -20,9 +20,14 @@ var app = angular.module('tattiFrontEndApp', [
         controller: 'MainCtrl',
         controllerAs: 'main'
       })
-      .when('/:id', {
+      .when('/profile', {
         templateUrl: 'views/profile.html',
         controller: 'profileController',
+        controllerAs: 'main'
+      })
+      .when('/logout', {
+        templateUrl: 'views/logout.html',
+        controller: 'logoutController',
         controllerAs: 'main'
       })
       .otherwise({
